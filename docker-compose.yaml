@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  mongodb:
+    image: mongo  # official mongo image from dockerhub
+    volumes:
+      - data:/data/db  # named volume to survive container shutdown
+    ports:
+      - '27017:27017'
+  app:
+    build: .  # same folder as this docker-compose file
+    ports:
+      - '5000:5000'
+    volumes:
+      - ./:/app  # bind-mount to track code changes in local machine into the container
+    depends_on:
+      - mongodb
+
+# exposing named volumes globally
+volumes:
+  data:
